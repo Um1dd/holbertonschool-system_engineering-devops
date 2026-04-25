@@ -1,0 +1,14 @@
+This infrastructure design represents a simple one-server web stack for www.foobar.com.
+
+1. Server: A physical or virtual machine that hosts the web application and its resources.
+2. Domain Name: foobar.com is the human-readable address that maps to the server's IP (8.8.8.8).
+3. DNS 'www' Record: This is an 'A' record that points the www subdomain to the server's IP address 8.8.8.8.
+4. Web Server (Nginx): Handles HTTP requests, manages static content, and serves as a gateway.
+5. Application Server: Executes the application logic and processes dynamic data requests.
+6. Database (MySQL): Stores and manages persistent data like user profiles and site information.
+7. Communication: The server uses the HTTP/HTTPS protocol to communicate with the user's computer.
+
+Issues with this infrastructure:
+- SPOF (Single Point of Failure): If the server or a key service (Nginx) fails, the entire site goes down.
+- Downtime during maintenance: Any updates or restarts will make the site unreachable.
+- Scalability: A single server cannot handle massive traffic spikes and lacks horizontal scaling.
