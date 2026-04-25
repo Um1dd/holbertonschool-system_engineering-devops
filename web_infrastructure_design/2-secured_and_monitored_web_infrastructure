@@ -1,0 +1,21 @@
+This infrastructure design focuses on security and monitoring for www.foobar.com.
+
+### New Elements and Why They Are Added:
+1. Firewalls (x3): Added to each server to protect the infrastructure by filtering incoming and outgoing network traffic based on security rules.
+2. SSL Certificate: Installed to enable HTTPS, ensuring that all data transmitted between the user's browser and the web server is encrypted.
+3. Monitoring Clients (x3): Installed on each server to collect system metrics (CPU, RAM, Disk) and service status to ensure high availability.
+
+### Specifics Explained:
+- Firewalls: They act as a barrier between a trusted network and an untrusted network (like the internet), preventing unauthorized access to the servers.
+- HTTPS: Serving traffic over HTTPS protects user data (like passwords) from "man-in-the-middle" attacks by encrypting the communication.
+- Monitoring: Used to proactively detect issues (e.g., a service crash or high resource usage) before they affect the end-users.
+- Data Collection: The monitoring tool (like Sumologic or Prometheus) uses an agent or client installed on each server to push or pull logs and metrics to a centralized dashboard.
+- Monitoring QPS (Queries Per Second): To monitor web server QPS, you must configure the monitoring agent to parse the web server (Nginx) access logs and calculate the number of requests handled per second.
+
+### Issues with this Infrastructure:
+- SSL Termination at Load Balancer: While common, terminating SSL at the load balancer means traffic between the load balancer and the application servers is unencrypted (HTTP), which could be a security risk in internal networks.
+- Single Write Database: Having only one MySQL server for writes is a bottleneck and a SPOF. If the Primary node fails, the application cannot perform write operations.
+- Uniform Server Components: Running the web server, app server, and database on the same machine leads to resource contention. If one service (like MySQL) consumes all RAM, it can crash the web server.
+
+### Infrastructure Diagram Description:
+The setup includes 1 Load Balancer and 2 Application Servers, all behind firewalls. Traffic is encrypted via SSL, and all nodes report to a central monitoring service.
