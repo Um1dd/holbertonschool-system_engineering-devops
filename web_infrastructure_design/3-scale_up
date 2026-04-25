@@ -1,0 +1,20 @@
+This infrastructure design demonstrates a highly scalable and redundant architecture for www.foobar.com.
+
+### New Elements and Why They Are Added:
+
+1. Cluster of Load Balancers (HAproxy):
+We are adding a second Load Balancer to create a cluster. This ensures High Availability (HA). If one load balancer fails, the other one takes over (Failover), preventing the load balancer from being a Single Point of Failure (SPOF).
+
+2. Split Components (Decoupling):
+Previously, Nginx, the Application Server, and MySQL were on the same machine. In this design, they are moved to their own dedicated servers:
+- Dedicated Web Server (Nginx): Focuses only on handling HTTP requests and serving static content.
+- Dedicated Application Server: Focuses only on executing the code logic (e.g., Python, PHP), allowing for better resource management.
+- Dedicated Database Server (MySQL): Ensures that database operations do not compete with the web or app servers for CPU and RAM.
+
+3. Additional Server:
+An extra server is added to increase the capacity of the infrastructure, allowing the system to handle more concurrent users and providing redundancy across all layers.
+
+### Infrastructure Benefits:
+- Improved Performance: Since each service has its own dedicated hardware, they no longer compete for resources.
+- Scalability: We can now scale each layer independently. For example, if the database is slow, we can upgrade only the database server without touching the web servers.
+- Reliability: The Load Balancer cluster ensures that the entry point to our system is always active.
